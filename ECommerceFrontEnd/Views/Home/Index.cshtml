@@ -1,0 +1,30 @@
+﻿@page
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <p>@ViewData["Message"]</p>
+</div>
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+
+public async Task OnGet()
+{
+    ViewData["Message"] = "Hello from webfrontend";
+
+    using (var client = new System.Net.Http.HttpClient())
+    {
+        // Call *mywebapi*, and display its response in the page
+       var request = new System.Net.Http.HttpRequestMessage();
+       // request.RequestUri = new Uri("http://mywebapi/WeatherForecast"); // ASP.NET 3 (VS 2019 only)
+       request.RequestUri = new Uri("http://api/api/values/1"); // ASP.NET 2.x
+       var response = await client.SendAsync(request);
+       ViewData["Message"] += " and " + await response.Content.ReadAsStringAsync();
+    }
+}
